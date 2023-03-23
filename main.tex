@@ -73,8 +73,17 @@ In order to make there sub-carriers orthogonal to each other or not overlap each
 
 At the receiver, the OFDM signal is first demodulated to recover the sub-carriers. Then, each sub-carrier is processed individually to recover the raw data. A parallel-serial converter is then used to convert the low-speed data stream to a high-speed data stream for use by the terminal.
 
-\paragraph{Principle of OFDM}
+Overall, the principle of OFDM allows for high-speed data transmission over limited bandwidth channels, with robustness against interference and distortion caused by multi-path propagation.
+
+\subsubsection{Implementations of Transceivers}
 Principle of OFDM
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/OFDM_transceiver.pdf}\\
+  \caption{System environment.}
+  \label{fig:env}
+\end{figure}
 
 \subparagraph{Principle of OFDM}
 Principle of OFDM
