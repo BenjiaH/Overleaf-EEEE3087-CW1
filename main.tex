@@ -5,9 +5,9 @@
 \usepackage{hyperref}
 \usepackage{amssymb}
 
-\title{EEEE3087 Mobile technologies \\Coursework1}
-\author{Yaowen Hu\\20495331}
-% \date{\today}
+\title{\vspace{20 pt}OFDM Modulation for 4G LTE Mobile\\{\small EEEE3087 Mobile technologies|Coursework1}\vspace{20 pt}}
+\author{Yaowen Hu\\{\small 20495331}}
+\date{}
 
 \begin{document}
 
@@ -25,6 +25,7 @@
 \vfill
 
 \centering{University of Nottingham}\\
+\vspace{10 pt}
 \centering{\today}
 \thispagestyle{empty}
 \pagebreak
@@ -41,6 +42,8 @@
 \begin{abstract}
 \addcontentsline{toc}{section}{Abstract}
 My abstract
+\pagenumbering{Roman}
+\setcounter{page}{1}
 \thispagestyle{empty}
 \pagebreak
 \end{abstract}
@@ -49,17 +52,21 @@ My abstract
 
 \part{Introduction and Background Research}
 
-\section{Introduction and Background Research}
-
+\pagenumbering{arabic}
 \pagestyle{plain}
 \setcounter{page}{1}
 
-\subsection{Introduction}
+\section{Introduction}
 \textit{Orthogonal Frequency Division Multiplexing} (OFDM) is one of the most powerful modulation technique. It is designed for high-data-rate transmission. In general, it will convert a high-rate data stream into several low-rate data streams which can be transmitted in parallel\cite{RN79}. These streams or sub-carriers are orthogonal to each other, which means they don't interfere with each other, allowing multiple sub-carriers to be transmitted simultaneously over the same channel without causing interference.
 
-OFDM is used in many different communication systems, including digital television, Wi-Fi, 4G and 5G LTE (Long-term Evolution) mobile networks, and \textit{Digital Subscriber Line} (DSL) modems over copper-based telephone access lines. Due to its excellent performance, OFDM has been standardized by IEEE into standards such as 802.11g and 802.11a\cite{RN79}.
+\section{A Brief Implementation of OFDM}
+At the transmitter, it is required to apply a series-parallel (SP) conversion, i.e., from a single point to N points. Then use \textit{Inverse Fast Fourier Transform} (IFFT) to create the time-domain OFDM signal from the modulated signal. Add a \textit{digital-to-analogue converter} (DAC) to from the signal which can be transmitted in the channel.
 
-\subsubsection{Principle of OFDM}
+At the receiver, the OFDM signal is first demodulated to recover the sub-carriers. Then, each sub-carrier is processed individually to recover the raw data. A parallel-serial converter is then used to convert the low-speed data stream to a high-speed data stream for use by the terminal.
+
+Overall, the principle of OFDM allows for high-speed data transmission over limited bandwidth channels, with robustness against interference and distortion caused by multi-path propagation.
+
+\section{Role in Mobile Networks}
 When the signal is transmitted in the air, it is very likely to be interfered and distorted by multi-path propagation which is shown in Figure \ref{fig:multipath propagation}. Hence, people are considering to transmit multiple non-interference sub-carriers which can be recovered easily by their orthogonality.
 
 \begin{figure}[!h]
@@ -68,42 +75,33 @@ When the signal is transmitted in the air, it is very likely to be interfered an
 \caption{\label{fig:multipath propagation}The multi-path propagation}
 \end{figure}
 
+OFDM is used in many different communication systems, including digital television, Wi-Fi, 4G and 5G LTE (Long-term Evolution) mobile networks, and \textit{Digital Subscriber Line} (DSL) modems over copper-based telephone access lines. Due to its excellent performance, OFDM has been standardized by IEEE into standards such as 802.11g and 802.11a\cite{RN79}.
+
+\subsection{Implementations of OFDM Based on QAM}
 In order to make there sub-carriers orthogonal to each other or not overlap each other in the frequency domain, the inner product of any two sub-carriers is zero. That is, in the time domain, the cross-correlation of any two sub-carriers is zero. As shown in the following Equation \ref{con:cc},
 
 \begin{equation}
 (f \star g) \triangleq \int_{-\infty}^{\infty} sub-carrier_1(t) \cdot sub-carrier_2(t)dt=0 \label{con:cc}
 \end{equation}
 
-At the receiver, the OFDM signal is first demodulated to recover the sub-carriers. Then, each sub-carrier is processed individually to recover the raw data. A parallel-serial converter is then used to convert the low-speed data stream to a high-speed data stream for use by the terminal.
-
-Overall, the principle of OFDM allows for high-speed data transmission over limited bandwidth channels, with robustness against interference and distortion caused by multi-path propagation.
-
-\subsubsection{Implementations of Transceivers}
 Before mapping each low-rate date to sub-carriers, we first need to use a serial to parallel converter. The IFFT can be performed only after the series-parallel (SP) conversion, i.e., from a single point to N points. At the same time, this operation corresponds to an N-fold increase in the duration of each symbol, increasing the system's immunity to interference.
 
 Secondly, it's common to use the \textit{Inverse Discrete Fourier Transform} (IDFT) technique to map to sub-carriers. We usually us the \textit{Inverse Fast Fourier transform} (IFFT) technique to complete that as it will perform a more efficient way to compute. The process of generating an OFDM signal using IFFT involves taking the data to be transmitted and mapping it onto the sub-carriers. The sub-carrier signals are then modulated using the appropriate phase and amplitude information, and then combined using the IFFT to create the time-domain OFDM signal. 
 
 At the receiver, the process is reversed. When the signal passes through the channel, it is first sampled. Then, a PS converter is used to feed the FFT with sub-carriers. After that, write a block of N symbols into a vector which is SP converter
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=0.9\textwidth]{images/OFDM_transceiver.pdf}\\
   \caption{Transceiver structure of OFDM}
   \label{fig:env}
 \end{figure}
 
-\subparagraph{Principle of OFDM}
-Principle of OFDM
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{BER Analysis}
 
-\section{BER analysis}
-123\cite{RN79},dsad
-sdasd
-
-\section{Conclusion}
+\part{Conclusion}
 123
-
 
 \bibliographystyle{IEEEtran}
 \bibliography{exportlist}
