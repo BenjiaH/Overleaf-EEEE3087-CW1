@@ -4,6 +4,8 @@
 \usepackage{cite}
 \usepackage{hyperref}
 \usepackage{amssymb}
+\usepackage{amsmath}
+\numberwithin{figure}{section}
 
 \title{\vspace{20 pt}\huge{OFDM Modulation for 4G LTE Mobile}\\\vspace{10 pt}\large{EEEE3087 Mobile technologies|Coursework1}\vspace{20 pt}}
 \author{\huge{Yaowen Hu}\\{\small 20495331}}
@@ -57,15 +59,20 @@ My abstract
 \setcounter{page}{1}
 
 \section{Introduction}
-\textit{Orthogonal Frequency Division Multiplexing} (OFDM) is one of the most powerful modulation technique. It is designed for high-data-rate transmission. In general, it will convert a high-rate data stream into several low-rate data streams which can be transmitted in parallel\cite{RN79}. These streams or sub-carriers are orthogonal to each other, which means they don't interfere with each other, allowing multiple sub-carriers to be transmitted simultaneously over the same channel without causing interference.
+\textit{Orthogonal Frequency Division Multiplexing} (OFDM) is one of the most powerful modulation technique. It is designed for high-data-rate transmission. In general, it will convert a high-rate data stream into several low-rate data streams which can be transmitted in parallel\cite{RN79}. These streams or sub-carriers are orthogonal to each other, which means they don't interfere with each other, allowing multiple sub-carriers to be transmitted simultaneously over the same channel without causing interference. Figure \ref{fig:subcarriers} shows the spectrum of sub-carriers of OFDM, as you can see all the sub-carriers do not overlap and they are orthogonal to each other.
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/subcarriers.png}
+    \caption{\label{fig:subcarriers}The spectrum of sub-carriers of OFDM}
+\end{figure}
 
 \section{A Brief Implementation of OFDM}
 At the transmitter, it is required to apply a series-parallel (SP) conversion, i.e., from a single point to N points. Then use \textit{Inverse Fast Fourier Transform} (IFFT) to create the time-domain OFDM signal from the modulated signal. In the end, add a \textit{digital-to-analogue converter} (DAC) to from the signal which can be transmitted in the channel.
 
 At the receiver, the OFDM signal is first demodulated to recover the sub-carriers. Then, each sub-carrier is processed individually to recover the raw data. A parallel-serial converter is then used to convert the low-speed data stream to a high-speed data stream for use by the terminal.
 
-Overall, the principle of OFDM allows for high-speed data transmission over limited bandwidth channels, with robustness against interference and distortion caused by multi-path propagation.
+Overall, the principle of OFDM allows for high-speed data transmission over limited bandwidth channels, with robustness against interference and distortion caused by multi-path propagation. 
 
 \section{Role in Mobile Networks}
 OFDM plays an important role in both 4G and 5G LTE (Long-term Evolution) mobile networks.
@@ -85,13 +92,27 @@ OFDM is used in many different communication systems, including digital televisi
 \section{Implementations of OFDM Based on QAM}
 
 \subsection{QAM Modulation}
+\textit{Quadrature Amplitude Modulation} (QAM) is a digital modulation which use two sinusoidal carriers that have a phase difference of ${\pi}/{2}$, known as orthogonality or quadrature. Each of them can be modulated independently, transmitted over the same frequency band, and demodulated at the receiver. Both mobile radio and satellite communication technologies use QAM and its variations \cite{RN82}.
 
+When the signal is sent under the QAM modulation, it will change the amplitude and phase of it. One possible and easiest way to implement is generate two carrier which are sine and cosine. They are obviously quadrature. The symbols that go through the cosine carrier are called \textit{in-phase} (I) signal and the others are called \textit{quadrature} (Q). They can be represented as: 
 
+\begin{equation}
+I = A\cos{\varphi} \label{con:i signal}
+\end{equation}
+and
+\begin{equation}
+Q = A\sin{\varphi} \label{con:q signal}
+\end{equation}
+After that, mix these two signals. This modulation scheme is called 4QAM, and in fact it is not different from \textit{Quadrature Phase Shift Keying} (QPSK).
+
+In the same time, we can increase the order of QAM. M-decimal QAM is denoted as MQAM. As an example, I will briefly described 16QAM.
+
+\subsection{Implementations of Transceiver}
 
 In order to make there sub-carriers orthogonal to each other or not overlap each other in the frequency domain, the inner product of any two sub-carriers is zero. That is, in the time domain, the cross-correlation of any two sub-carriers is zero. As shown in the following Equation \ref{con:cc},
 
 \begin{equation}
-(f \star g) \triangleq \int_{-\infty}^{\infty} sub-carrier_1(t) \cdot sub-carrier_2(t)dt=0 \label{con:cc}
+(f \star g) \triangleq \int_{-\infty}^{\infty} sub-carrier_N(t) \cdot sub-carrier_{N+1}(t)dt=0 \label{con:cc}
 \end{equation}
 
 Before mapping each low-rate date to sub-carriers, we first need to use a serial to parallel converter. The IFFT can be performed only after the series-parallel (SP) conversion, i.e., from a single point to N points. At the same time, this operation corresponds to an N-fold increase in the duration of each symbol, increasing the system's immunity to interference.
