@@ -5,8 +5,8 @@
 \usepackage{hyperref}
 \usepackage{amssymb}
 
-\title{\vspace{20 pt}OFDM Modulation for 4G LTE Mobile\\{\small EEEE3087 Mobile technologies|Coursework1}\vspace{20 pt}}
-\author{Yaowen Hu\\{\small 20495331}}
+\title{\vspace{20 pt}\huge{OFDM Modulation for 4G LTE Mobile}\\\vspace{10 pt}\large{EEEE3087 Mobile technologies|Coursework1}\vspace{20 pt}}
+\author{\huge{Yaowen Hu}\\{\small 20495331}}
 \date{}
 
 \begin{document}
@@ -59,25 +59,35 @@ My abstract
 \section{Introduction}
 \textit{Orthogonal Frequency Division Multiplexing} (OFDM) is one of the most powerful modulation technique. It is designed for high-data-rate transmission. In general, it will convert a high-rate data stream into several low-rate data streams which can be transmitted in parallel\cite{RN79}. These streams or sub-carriers are orthogonal to each other, which means they don't interfere with each other, allowing multiple sub-carriers to be transmitted simultaneously over the same channel without causing interference.
 
+
 \section{A Brief Implementation of OFDM}
-At the transmitter, it is required to apply a series-parallel (SP) conversion, i.e., from a single point to N points. Then use \textit{Inverse Fast Fourier Transform} (IFFT) to create the time-domain OFDM signal from the modulated signal. Add a \textit{digital-to-analogue converter} (DAC) to from the signal which can be transmitted in the channel.
+At the transmitter, it is required to apply a series-parallel (SP) conversion, i.e., from a single point to N points. Then use \textit{Inverse Fast Fourier Transform} (IFFT) to create the time-domain OFDM signal from the modulated signal. In the end, add a \textit{digital-to-analogue converter} (DAC) to from the signal which can be transmitted in the channel.
 
 At the receiver, the OFDM signal is first demodulated to recover the sub-carriers. Then, each sub-carrier is processed individually to recover the raw data. A parallel-serial converter is then used to convert the low-speed data stream to a high-speed data stream for use by the terminal.
 
 Overall, the principle of OFDM allows for high-speed data transmission over limited bandwidth channels, with robustness against interference and distortion caused by multi-path propagation.
 
 \section{Role in Mobile Networks}
-When the signal is transmitted in the air, it is very likely to be interfered and distorted by multi-path propagation which is shown in Figure \ref{fig:multipath propagation}. Hence, people are considering to transmit multiple non-interference sub-carriers which can be recovered easily by their orthogonality.
+OFDM plays an important role in both 4G and 5G LTE (Long-term Evolution) mobile networks.
+\begin{itemize}
+    \item Strong anti-interference capability:When the signal is transmitted in the air, it is very likely to be interfered and distorted by multi-path propagation which is shown in Figure \ref{fig:multipath propagation}. Hence, people are considering to transmit multiple non-interference sub-carriers which can be recovered easily by their orthogonality.
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{images/multipath propagation.png}
+        \caption{\label{fig:multipath propagation}The multi-path propagation}
+    \end{figure}
+    \item High data rates: As OFDM owns several channels to transmit data, it can gain a higher rates. That is, it can be considered as a MIMO system.
+    \item High spectrum utilization: OFDM can be used to transmit multiple sub-carriers simultaneously over the same channel, which can be used to increase the spectral efficiency of the system.
+\end{itemize}
 
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.8\textwidth]{images/multipath propagation.png}
-\caption{\label{fig:multipath propagation}The multi-path propagation}
-\end{figure}
+OFDM is used in many different communication systems, including digital television, Wi-Fi, 4G and 5G LTE  mobile networks, and \textit{Digital Subscriber Line} (DSL) modems over copper-based telephone access lines. Due to its excellent performance, OFDM has been standardized by IEEE into standards such as 802.11g and 802.11a. The \textit{asynchronous digital subscriber line} (ADSL) and \textit{high-bit-rate digital subscriber line} (HDSL) technologies use OFDM for fixed-wire applications.\cite{RN79, RN81}.
 
-OFDM is used in many different communication systems, including digital television, Wi-Fi, 4G and 5G LTE (Long-term Evolution) mobile networks, and \textit{Digital Subscriber Line} (DSL) modems over copper-based telephone access lines. Due to its excellent performance, OFDM has been standardized by IEEE into standards such as 802.11g and 802.11a\cite{RN79}.
+\section{Implementations of OFDM Based on QAM}
 
-\subsection{Implementations of OFDM Based on QAM}
+\subsection{QAM Modulation}
+
+
+
 In order to make there sub-carriers orthogonal to each other or not overlap each other in the frequency domain, the inner product of any two sub-carriers is zero. That is, in the time domain, the cross-correlation of any two sub-carriers is zero. As shown in the following Equation \ref{con:cc},
 
 \begin{equation}
@@ -101,15 +111,14 @@ At the receiver, the process is reversed. When the signal passes through the cha
 \part{BER Analysis}
 
 \part{Conclusion}
-123
+Conclusion
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{[Appendices]}
+[Appendices]
 
 \bibliographystyle{IEEEtran}
 \bibliography{exportlist}
 \addcontentsline{toc}{section}{References}
 
-\section{[Appendices]}
-123
-
-
-	
 \end{document}
