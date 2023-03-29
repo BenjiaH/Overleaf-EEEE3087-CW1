@@ -5,6 +5,7 @@
 \usepackage{subfigure}
 \usepackage{cite}
 \usepackage{hyperref}
+\hypersetup{hidelinks} 
 \usepackage{amssymb}
 \usepackage[inkscapelatex=false]{svg}
 \usepackage{amsmath}
@@ -55,7 +56,7 @@
 My abstract
 \pagenumbering{Roman}
 \setcounter{page}{1}
-\thispagestyle{empty}
+\thispagestyle{plain}
 \pagebreak
 \end{abstract}
 
@@ -259,8 +260,12 @@ Comparing the the channel between the AWGN channel and the Rayleigh fading chann
 \end{figure}
 
 \part{Conclusion}
-Conclusion
-
+In this report, I introduced the basic OFDM introduction and implementation, and also described the process of implementing 16-QAM based OFDM from Simulink, and performed many tests including constellation diagram, power spectrum, and BER. The tests were carried out under different channel conditions. Theoretically, the BER should not be so low in Rayleigh channel, probably due to the wrong parameter settings.
+In the future, the areas I need to improve are
+\begin{itemize}
+    \item Adjusting the parameters of Rayleigh fading channel
+    \item Familiarize myself with the correspondence between the module and the actual circuit
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagebreak
