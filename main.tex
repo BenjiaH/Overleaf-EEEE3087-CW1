@@ -1,35 +1,44 @@
-\documentclass[10pt]{article}
+\documentclass[11pt]{article}
 
+\usepackage{geometry}
+\geometry{a4paper,left=31.7mm,right=31.7mm,top=25.4mm,bottom=25.4mm}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subfigure}
 \usepackage{cite}
 \usepackage{hyperref}
+
 \hypersetup{hidelinks} 
 \usepackage{amssymb}
 \usepackage[inkscapelatex=false]{svg}
 \usepackage{amsmath}
 \numberwithin{figure}{section}
 \numberwithin{equation}{section}
+\newcommand\keywords[1]{\textbf{Keywords}: #1}
 
 \title{\vspace{20 pt}\huge{OFDM Modulation for 4G LTE Mobile}\\\vspace{10 pt}\large{EEEE3087 Mobile technologies|Coursework1}\vspace{100 pt}}
 \author{\huge{Yaowen Hu}\\{\small 20495331}}
 \date{}
 
+\hypersetup{
+pdftitle={OFDM Modulation for 4G LTE Mobile},
+pdfauthor={Yaowen Hu},
+pdfsubject={EEEE3087 Mobile technologies|Coursework1},
+pdfkeywords={OFDM, QAM, BER}
+}
+
 \begin{document}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{titlepage}
 \begin{figure}
-    \vspace{-4em}
+    \vspace{30 pt}
     \centering
     \includegraphics[width=0.9\textwidth]{images/logo.png}
 \end{figure}
 
 \vfill
 \maketitle
-\vspace{60 pt}
+\vspace{120 pt}
 \centering{Module Convenor:}\\
 \centering{Dr Steve Greedy}\\
 \centering{Dr Minglei You}\\
@@ -44,24 +53,22 @@
 \end{titlepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\tableofcontents
-\thispagestyle{empty}
-\pagebreak
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{abstract}
-\addcontentsline{toc}{section}{Abstract}
-My abstract
+% \addcontentsline{toc}{section}{Abstract}
+OFDM technology started to become rapidly popular after the 1990s. This paper introduces the main principles and implementation of OFDM, and introduces the important role of OFDM at the level of 4G and 5G mobile networks. In the second part, I have done the simulation of a 16-QAM based OFDM transceiver in Simulink$^\circledR$ and observed the constellation diagram, power spectrum and calculated the BER.
+
+Through this article, I learned how OFDM is implemented and how to complete a complete transceiver design in Simulink$^\circledR$ and understand the impact of different channels and different signal-to-noise ratios on communication quality.
+\end{abstract}
+\keywords{OFDM, QAM, BER}
 \pagenumbering{Roman}
 \setcounter{page}{1}
 \thispagestyle{plain}
 \pagebreak
-\end{abstract}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\tableofcontents
+\thispagestyle{empty}
+\pagebreak
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \part{Introduction and Background Research}
 
 \pagenumbering{arabic}
@@ -69,10 +76,10 @@ My abstract
 \setcounter{page}{1}
 
 \section{Introduction}
-\textit{Orthogonal Frequency Division Multiplexing} (OFDM) is one of the most powerful modulation technique. It is designed for high-data-rate transmission. In general, it will convert a high-rate data stream into several low-rate data streams which can be transmitted in parallel\cite{RN79}. These streams or sub-carriers are orthogonal to each other, which means they don't interfere with each other, allowing multiple sub-carriers to be transmitted simultaneously over the same channel without causing interference. Figure \ref{fig:subcarriers} shows the spectrum of sub-carriers of OFDM, as you can see all the sub-carriers do not overlap and they are orthogonal to each other \cite{RN80}.
+\textit{Orthogonal Frequency Division Multiplexing} (OFDM) is one of the most powerful modulation techniques. It is designed for high-data-rate transmission. In general, it will convert a high-rate data stream into several low-rate data streams which can be transmitted in parallel\cite{RN79}. These streams or sub-carriers are orthogonal to each other, which means they don't interfere with each other, allowing multiple sub-carriers to be transmitted simultaneously over the same channel without causing interference. Figure \ref{fig:subcarriers} shows the spectrum of sub-carriers of OFDM, as you can see all the sub-carriers do not overlap and they are orthogonal to each other \cite{RN80}.
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/subcarriers.png}
+    \includegraphics[width=1\textwidth]{images/subcarriers1.png}
     \caption{\label{fig:subcarriers}The spectrum of sub-carriers of OFDM}
 \end{figure}
 \subsection{A Brief Implementation of OFDM}
@@ -84,13 +91,13 @@ Overall, the principle of OFDM allows for high-speed data transmission over limi
 \subsection{Role in Mobile Networks}
 OFDM plays an important role in both 4G and 5G LTE (Long-term Evolution) mobile networks.
 \begin{itemize}
-    \item Strong anti-interference capability:When the signal is transmitted in the air, it is very likely to be interfered and distorted by multi-path propagation which is shown in Figure \ref{fig:multipath propagation}. Hence, people are considering to transmit multiple non-interference sub-carriers which can be recovered easily by their orthogonality.
+    \item Strong anti-interference capability:When the signal is transmitted in the air, it is very likely to be interfered and distorted by multi-path propagation which is shown in Figure \ref{fig:multipath propagation}. Hence, people are considering transmitting multiple non-interference sub-carriers which can be recovered easily by their orthogonality.
     \begin{figure}[!ht]
         \centering
-        \includegraphics[width=0.5\textwidth]{images/multipath propagation.png}
+        \includegraphics[width=0.7\textwidth]{images/multipath propagation.png}
         \caption{\label{fig:multipath propagation}The multi-path propagation}
     \end{figure}
-    \item High data rates: As OFDM owns several channels to transmit data, it can gain a higher rates. That is, it can be considered as a \textit{Multiple-Input Multiple-Output} (MIMO) system.
+    \item High data rates: As OFDM owns several channels to transmit data, it can gain higher rates. That is, it can be considered as a \textit{Multiple-Input Multiple-Output} (MIMO) system.
     \item High spectrum utilization: OFDM can be used to transmit multiple sub-carriers simultaneously over the same channel, which can be used to increase the spectral efficiency of the system.
 \end{itemize}
 
@@ -98,19 +105,18 @@ OFDM is used in many different communication systems, including digital televisi
 
 \section{Implementations of OFDM Based on QAM}
 \subsection{QAM Modulation}
-\textit{Quadrature Amplitude Modulation} (QAM) is a digital modulation which use two sinusoidal carriers that have a phase difference of $\pi/2$, known as orthogonality or quadrature. Each of them can be modulated independently, transmitted over the same frequency band, and demodulated at the receiver. Both mobile radio and satellite communication technologies use QAM and its variations \cite{RN77}.
+\textit{Quadrature Amplitude Modulation} (QAM) is a digital modulation which uses two sinusoidal carriers that have a phase difference of $\pi/2$, known as orthogonality or quadrature. Each of them can be modulated independently, transmitted over the same frequency band, and demodulated at the receiver. Both mobile radio and satellite communication technologies use QAM and its variations \cite{RN77}.
 
-Base on this theory, there are many QAM variants, such as 64-QAM, 256-QAM, 1024-QAM, which are widely used \cite{RN77}. The diagram above shows the constellation of QAM.
+Based on this theory, there are many QAM variants, such as 64-QAM, 256-QAM, 1024-QAM, which are widely used \cite{RN77}. The diagram below shows the constellation of QAM.
 \begin{figure}[!h]
     \centering
-    \includesvg[width=0.3\textwidth]{images/constellation_for_QAM.svg}
+    \includesvg[width=0.45\textwidth]{images/constellation_for_QAM.svg}
     \caption{Constellation plot for 4-QAM, 16-QAM, 32-QAM, and 64-QAM}
     \label{fig:Constellation of QAM}
 \end{figure}
 \subsection{Implementations of Transceiver}
 \subsubsection{Implementations of QAM}
 When the signal is sent under the QAM modulation, it will change the amplitude and phase of it. 
-
 
 One possible and easiest way to implement is generate two carrier which are sine and cosine. They are obviously quadrature. The symbols that go through the cosine carrier are called \textit{in-phase} (I) signal and the others are called \textit{quadrature} (Q). They can be represented as: 
 \begin{equation}
@@ -120,22 +126,23 @@ and
 \begin{equation}
 Q = A\sin{\varphi} \label{con:q signal}
 \end{equation}
-After that, mix these two signals. This modulation scheme is called 4QAM, and in fact it is not different from \textit{Quadrature Phase Shift Keying} (QPSK).
+After that, mix these two signals. This modulation scheme is called 4QAM, and in fact, it is not different from \textit{Quadrature Phase Shift Keying} (QPSK).
 
-In the same time, we can increase the order of QAM. M-decimal QAM is denoted as MQAM. As an example, I will briefly described 16-QAM. The 16-QAM modulation scheme is shown in Figure \ref{fig:structure of QAM}.
+At the same time, we can increase the order of QAM. M-decimal QAM is denoted as MQAM. As an example, I will briefly describe 16-QAM. The 16-QAM modulation scheme is shown in Figure \ref{fig:structure of QAM}.
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/16QAM.pdf}
+    \includegraphics[width=0.8\textwidth]{images/16QAM.pdf}
     \caption{Block diagram of 16-QAM modulator}
     \label{fig:structure of QAM}
 \end{figure}
+
 Mathematically, it can be expressed as,
 \begin{equation}
 S_{16-QAM}(t) = I(t)\cos{2\pi f_ct}-Q(t)\sin{2\pi f_ct} \label{con:16-QAM}
 \end{equation}
 where $I(t)=\pm 1,\pm 3$; $Q(t)=\pm 1,\pm 3$. Since there are 16 possible combinations of $I(t)$ and $Q(t)$, the synthesized QAM signal has 16 states. In a period, there will be $log_216=4$ bits to be transmitted, and it will increase the data rate. Hence, we will use the \textit{Series-Parallel} (SP) conversion, i.e., from a single point to N points. In this scenario, $N=2$. In the I/Q channel respectively apply a 2-to-4 level converter. This mapper will transfer the four combinations of two bits into four amplitude levels. After that, the I/Q channel will multiply by the sine and cosine waves. 
 \subsubsection{Implementations of OFDM}
-In order to make there sub-carriers orthogonal to each other or not overlap each other in the frequency domain, the inner product of any two sub-carriers is zero. That is, in the time domain, the cross-correlation of any two sub-carriers is zero. As shown in the following Equation \ref{con:cc},
+In order to make their sub-carriers orthogonal to each other or not overlap each other in the frequency domain, the inner product of any two sub-carriers is zero. That is, in the time domain, the cross-correlation of any two sub-carriers is zero. As shown in the following Equation \ref{con:cc},
 \begin{equation}
 (f \star g) \triangleq \int_{-\infty}^{\infty} sub-carrier_N(t) \cdot sub-carrier_{N+1}(t)dt=0 \label{con:cc}
 \end{equation}
@@ -147,12 +154,20 @@ Secondly, it's common to use the \textit{Inverse Discrete Fourier Transform} (ID
 \end{equation}
 We usually us the \textit{Inverse Fast Fourier transform} (IFFT) technique to complete that as it will perform a more efficient way to compute. The process of generating an OFDM signal using IFFT involves taking the data to be transmitted and mapping it onto the sub-carriers. The sub-carrier signals are then modulated using the appropriate phase and amplitude information, and then combined using the IFFT to create the time-domain OFDM signal. 
 
-At the receiver, the process is reversed. When the signal passes through the channel, it is first sampled. Then, a PS converter is used to feed the FFT with sub-carriers. After that, write a block of N symbols into a vector which is PS converter
+At the receiver, the process is reversed. When the signal passes through the channel, it is first sampled. Then, a PS converter is used to feed the FFT with sub-carriers. After that, write a block of N symbols into a vector which is PS converter. Hence, the structure of OFDM transceiver is shown in the Figure \ref{fig:Transceiver structure}.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.9\textwidth]{images/OFDM_transceiver.pdf}
-    \caption{Transceiver structure of OFDM}
+    \caption{Structure of OFDM Transceiver}
     \label{fig:Transceiver structure}
+\end{figure}
+\subsubsection{Typical BER}
+In order to provide a typical \textit{Bit Error Rate} (BER) of OFDM and 16-QAM, I use MATLAb to simulate the BER of OFDM and 16-QAM. The simulation results are shown in the Figure \ref{fig:BER of OFDM and 16-QAM}.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/typical_BER.eps}
+    \caption{Typical BER of OFDM and 16-QAM}
+    \label{fig:BER of OFDM and 16-QAM}
 \end{figure}
 \subsection{Advantages and Disadvantages}
 When OFDM was first invented in the 1960s at Nokia Bell Lab \cite{RN82}, it was not taken seriously because of several technical limitations that made it challenging to implement in practical communication systems. Some of these limitations include: high complexity, sensitivity to frequency offset, limited channel estimation and so on. It was not until the 1990s, when advances in DSP, computing technology and FFT algorithms, made it possible to overcome these technical limitations, that OFDM started to gain widespread attention and adoption in communication systems. 
@@ -162,16 +177,36 @@ Its advantages includes robustness in the presence of multi-path transmission, r
 Though, it still has some drawbacks, high \textit{Out-of-Band} (OOB) power, sensitivity to frequency offset, and high \textit{Peak-to-Average Power Ratio} (PAPR) \cite{RN81}.
 
 \section{Practical OFDM Modulator or Demodulator Design}
-The most ordinary way to implement OFDM on a hardware is using \textit{Field Programmable Gate Array} (FPGA).
-?????????
-
-
+The most ordinary way to implement OFDM digitally on hardware is using \textit{Field Programmable Gate Array} (FPGA). However, when the OFDM is invented, there are still many ways to implement it in an analogue circuit. The the structure of OFDM transceiver implementing in analogue circuit is shown in the Figure \ref{fig:Transceiver structure analogue} \cite{RN79}.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/OFDM_transceiver_analog.pdf}
+    \caption{Structure of OFDM Analogue Transceiver}
+    \label{fig:Transceiver structure analogue}
+\end{figure}
+We can use an oscillator to generate a continuous wave (CW) signal, and then use a frequency multiplier and a comb generator to generate the subcarriers at the desired frequencies. The comb generator can be implemented using a phase-locked loop (PLL) or a delay-line filter. The subcarriers are then modulated using QAM or other modulation schemes, and combined using a mixer and a filter to generate the final OFDM signal.
+\begin{itemize}
+    \item Mixer: Mixer is an important device in the RF circuit, it is often used for modulation, the signal will be loaded on the high frequency signal.
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{images/mixer.pdf}
+        \caption{Schematic of a Mixer}
+        \label{fig:mixer}
+    \end{figure}
+    \item LPF: \textit{Low Pass Filter} (LPF) is a filter that passes low-frequency signals and attenuates high-frequency signals. It is very useful in the analogue OFDM transceiver.
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{images/LPF.pdf}
+        \caption{Schematic of a LPF}
+        \label{fig:LPF}
+    \end{figure}
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \part{BER Analysis}
 \section{Blocks of the OFDM Transceiver in Simulink$^\circledR$}
-\begin{figure}[!ht]
+\begin{figure}[!h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/simulink.pdf}
+    \includegraphics[width=0.9\textwidth]{images/simulink.pdf}
     \caption{Schematic of 16-QAM-based OFDM transceiver}
     \label{fig:simulink}
 \end{figure}
@@ -180,11 +215,11 @@ A simulation software called Simulink$^\circledR$ is frequently used in the plan
     \item Random Integer Generator: This block can provide a random sequence of numbers as the input raw data.
     \item 16-QAM: This block can modulate or demodulate the data by 16-QAM modulation. This process is called baseband modulation. After that, we can convert baseband signals into frequency band signals and map the data to I/Q.
     \item Reshape + Padding: This block can reshape the data into a matrix and add some zeros to the end of the data to make the length of the data can be divided by 64. They are designed to generate OFDM symbols.
-    \item IFFT: This block can map the OFDM symbols into time domain signals. 
+    \item IFFT: This block can map the OFDM symbols into time domain signals. The subcarrier signals are then modulated using the appropriate phase and amplitude information, and then combined using the IFFT to create the time-domain OFDM signal. The IFFT is used because it can efficiently compute the inverse transform of the Discrete DFT, which is used to convert the subcarrier signals from the frequency domain to the time domain. The use of the IFFT also ensures that the subcarriers are orthogonal to each other in the time domain, which is necessary for reliable transmission of data.
     \item Cyclic Prefix: One of the main challenges in OFDM is the effect of multi-path fading, which can cause \textit{Inter-Symbol Interference} (ISI) between adjacent OFDM symbols. This can lead to errors in the received signal and can limit the achievable data rate. To mitigate the effect of ISI, a \textit{Cyclic Prefix} (CP) is added to each OFDM symbol. CP is to extend the OFDM symbol by copying the last samples of the OFDM symbol into its front \cite{RN146}.
     \begin{figure}[!ht]
         \centering
-        \includegraphics[width=0.7\textwidth]{images/Cyclic prefix.pdf}
+        \includegraphics[width=0.8\textwidth]{images/Cyclic prefix.pdf}
         \caption{OFDM symbols with CP}
         \label{fig:CP}
     \end{figure}
@@ -193,15 +228,16 @@ A simulation software called Simulink$^\circledR$ is frequently used in the plan
 \end{itemize}
 As for the receiver, we only need to reverse the process of transmission and do some small modifications. In addition to the transceiver, I have added some blocks for testing.
 \begin{itemize}
-    \item Constellation Diagram: It can reveal modulation error rates, \textit{Bit Error Rate} (BER) , phase noise, amplitude noise and other issues.
+    \item Constellation Diagram: It can reveal modulation error rates, BER, phase noise, amplitude noise and other issues.
     \item Spectrum Analyzer: Observation of the signal spectrum using the FFT technique.
     \item Error Rate Calculation: This block can calculate the error rate and provide three groups of result which are the error rate, number of errors and the number of samples compared.
+    \item Slider: This block can adjust the $Eb/No$ parameter in the AWGN Channel block very conveniently.
 \end{itemize}
 \section{BER Analysis}
 \subsection{Constellation Diagram}
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.4\textwidth]{images/TX Constellation Diagram.png}
+    \includegraphics[width=0.5\textwidth]{images/TX Constellation Diagram.png}
     \caption{Constellation Diagram of Transmitter}
     \label{fig:TXConstellation}
 \end{figure}
@@ -229,19 +265,19 @@ The constellation diagrams are shown in Figure \ref{fig:TXConstellation} and Fig
     \subfigure[Power Spectrum@25dB]{
     \begin{minipage}{1\textwidth}
         \centering
-        \includegraphics[scale=0.4]{images/spectrum25.eps}
+        \includegraphics[scale=0.55]{images/spectrum25.eps}
     \end{minipage}
     }
     \subfigure[Power Spectrum@0dB]{
     \begin{minipage}{1\textwidth}
         \centering
-        \includegraphics[scale=0.4]{images/spectrum0.eps}%
+        \includegraphics[scale=0.55]{images/spectrum0.eps}%
     \end{minipage}
     }
     \caption{Power Spectrum}
     \label{fig:Power Spectrum}
 \end{figure}
-By decreasing the SNR from $25dB$ to $0dB$, the power spectrum of the signal is shown in Figure \ref{fig:Power Spectrum}. The power spectrum of the signal is reduced due to the reduced channel quality. The frequency spectrum of the signal also starts to become irregular.
+By decreasing the SNR from $25dB$ to $0dB$, the power spectrum of the signal after AWGN channel is shown in Figure \ref{fig:Power Spectrum}. The power spectrum of the signal is reduced due to the reduced channel quality. The frequency spectrum of the signal also starts to become irregular.
 \subsection{BER Curve}
 Since I used the gain block in the OFDM model, the signal power of the AWGN input needs to be modified to 1 in the QAM only model so that the BER can be measured correctly.
 
@@ -251,23 +287,22 @@ In addition to setting $Eb/No$ to values of 0, 5, 10, 15, 20, 25 dB, I have addi
 
 From the Figure \ref{fig:BER}, however, we can see that the BER of 16-QAM-based OFDM is worse than that of QAM-only after signal power normalization because the OFDM model has more blocks than the QAM-only model. The more blocks there are, the more errors there will be.In addition, the OFDM model has a cyclic prefix, which will cause the BER to increase. 
 
-Comparing the the channel between the AWGN channel and the Rayleigh fading channel, we can see that these two model will have a very low BER when they were transmitted under Rayleigh fading channel. The curves are almost indistinguishable and have no reference value. I believe it is caused by the wrong parameter setting of the Rayleigh fading blcok. I will try to fix it in the future.
+Comparing the channel between the AWGN channel and the Rayleigh fading channel, we can see that these two models will have a very low BER when they were transmitted under Rayleigh fading channel. The curves are almost indistinguishable and have no reference value. I believe it is caused by the wrong parameter setting of the Rayleigh fading block. I will try to fix it in the future.
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/BER.eps}
+    \includegraphics[width=0.8\textwidth]{images/BER.eps}
     \caption{BER vs. Eb/No}
     \label{fig:BER}
 \end{figure}
-
 \part{Conclusion}
-In this report, I introduced the basic OFDM introduction and implementation, and also described the process of implementing 16-QAM based OFDM from Simulink, and performed many tests including constellation diagram, power spectrum, and BER. The tests were carried out under different channel conditions. Theoretically, the BER should not be so low in Rayleigh channel, probably due to the wrong parameter settings.
+In this report, I introduced the basic OFDM introduction and implementation, and also described the process of implementing 16-QAM based OFDM from Simulink$^\circledR$, and performed many tests including constellation diagram, power spectrum, and BER. The tests were carried out under different channel conditions. Theoretically, the BER should not be so low in the Rayleigh channel, probably due to the wrong parameter settings.
+This project allowed us to build a good body of knowledge on OFDM and QAM and to exercise our Simulink$^\circledR$ simulation skills. We learned about the various factors that judge the quality of communication and the method of judging the quality.
 In the future, the areas I need to improve are
 \begin{itemize}
     \item Adjusting the parameters of Rayleigh fading channel
-    \item Familiarize myself with the correspondence between the module and the actual circuit
+    \item Familiarize me with the correspondence between the module and the actual circuit
 \end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \pagebreak
 \bibliographystyle{IEEEtran}
 \bibliography{exportlist}
